@@ -1,11 +1,10 @@
-pipeline {
+node pipeline {
     agent any
-
+    
     stages {
         stage('Checkout') {
             steps {
-                // Checkout source code from Git
-                git 'https://github.com/your-username/your-repository.git'
+                git 'https://github.com/JhaRashi/Task-6.git'
             }
         }
         
@@ -14,19 +13,26 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
-
+        
         stage('Test') {
             steps {
                 sh 'mvn test'
             }
         }
-
+        
         stage('Deploy') {
             steps {
-              sh 'mvn deploy'
+                sh 'mvn deploy'
             }
         }
     }
-
+    
+    post {
+        success {
+            echo 'Deployment successful'
+        }
+        failure {
+            echo 'Deployment failed'
+        }
+    }
 }
-
