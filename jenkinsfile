@@ -1,1 +1,46 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout source code from Git
+                git 'https://github.com/your-username/your-repository.git'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // Build the Maven project
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run Selenium tests
+                sh 'mvn test'
+            }
+        }
+
+        stage('Deploy to Heroku') {
+            steps {
+                // Install Heroku CLI
+                sh 'curl https://cli-assets.heroku.com/install.sh | sh'
+                // Login to Heroku
+                sh 'heroku login -i'
+                // Create Heroku app
+                sh 'heroku create your-app-name'
+                // Deploy to Heroku
+                sh 'git push heroku master'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up steps, if necessary
+        }
+    }
+}
 
